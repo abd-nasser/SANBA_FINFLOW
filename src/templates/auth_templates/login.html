@@ -3,9 +3,11 @@
 {% block title %}Login page{% endblock title %}
 
 {% block content %}
-<h1>DIRECTEUR</h1>
-<br>
-<h1>SECRETAIRE</h1>
-<br>
-<h1>EMPLOYEE</h1>
+    <form 
+    method='post'
+    action="{% url 'auth_app:login' %}">
+     {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Inscrire">
+    </form>
 {% endblock content %}

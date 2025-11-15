@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'auth_app',
+    'directeur_app',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,8 @@ STATICFILES_DIRS = [
 ]
 
 
+#auth_conf
+AUTH_USER_MODEL= "auth_app.Personnel"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

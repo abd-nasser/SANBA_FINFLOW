@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import FondDisponibe
 
-# Register your models here.
+@admin.register(FondDisponibe)
+class AdminFondDisponible(admin.ModelAdmin):
+    list_display = ["montant", "date_ajout"]
+    

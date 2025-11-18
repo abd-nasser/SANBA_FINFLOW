@@ -22,18 +22,22 @@
    
    {% if demande.status == 'Approuvée' %}
    <h3 style='color:green;'>{{ demande.status }}</h3>
+   {% elif demande.status == 'Décaissé' %}
+    <h3 style='color:skyblue;'>{{ demande.status }}</h3>
 
    {% elif demande.status == 'Refusée' %}
     <h3 style='color:red;'>{{ demande.status }}</h3>
     {% else %}
     <h3 style='color:orange;'>{{ demande.status }}</h3>
+      <a href="{% url 'directeur_app:approuver-demande' demande.id %}" style='color: green;'>Approuver</a>
+         <a href="{% url 'directeur_app:refuser-demande' demande.id %}"style='color: red;'>Refusé</a>
    {% endif %}
     
         
     
     <div>
-        <a href="{% url 'directeur_app:approuver-demande' demande.id %}" style='color: green;'>Approuver</a>
-        <a href="{% url 'directeur_app:refuser-demande' demande.id %}"style='color: red;'>Refusé</a>
+      
+       
     </div>
     
     <hr>

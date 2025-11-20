@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form method="post" action="{% url 'employee_app:employee-view' %}">
+    {% csrf_token %}
+
+    {{form.as_p}}
+
+        <div>
+        <label for="materiau_article"> materiau_article </label>
+        <input id="materiau_article" name="materiau_article" type="text">
+        </div>
+        
+        <div>
+            <label for="prix_unitaire">prix_unitaire</label>
+            <input id="prix_unitaire" name='prix_unitaire' type="number">
+        </div>
+      
+        <div>
+            <label for="chantier">Chantier</label>
+            <input id="chantier" name="chantier" type="text">
+        </div>
+
+        <div>
+            <label for="quantité">quantité"</label>
+            <input type="number" name="quantité" id="quantité">
+        </div>
+
+        <div>
+            <label for="fournisseur" >Fournisseur</label>
+            <input id="fournisseur" name="fournisseur" type="text">
+        </div>
+
+        <div>
+            <label for="image">photo_facture</label>
+            <input  id="image" name="photo_facture" type="file">
+        </div>
+    <input type="submit" value="Soumettre rapport de demande">
+</form>
+    
+{% endblock content %}
+    
+

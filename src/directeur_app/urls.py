@@ -7,6 +7,7 @@ urlpatterns = [
     path("interface-directeur",views.directeur_view, name='directeur-view'),
     path("approuver/<int:demande_id>/demande", views.approuve_demande_view, name="approuver-demande"),
     path("refuser/<int:demande_id>/demande", views.refuse_demande_view, name="refuser-demande"),
-    path("ajouter-fond", views.ajouter_fond, name="ajouter-fond")
+    path("ajouter-fond", views.ajouter_fond, name="ajouter-fond"),
+    path("rapport-depense-employee", views.list_rapport_depense_view, name="rapport-depense-employee")
 ]
 

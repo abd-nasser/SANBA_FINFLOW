@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import FondDisponibe, Historique_dajout_fond
 from secretaire_app.models import DemandeDecaissement
+from employee_app.models import RapportDepense
 from django.contrib import messages
 import logging
 
@@ -13,10 +14,9 @@ def directeur_view(request):
     
     ctx = {
             "list_demande": list_demande,
-            "fond":fond.montant
+            "fond":fond.montant,
            }
     return render(request, "directeur_templates/directeur.html", ctx)
-
 
 
 
@@ -54,3 +54,8 @@ def refuse_demande_view(request, demande_id):
     demande.status="Refusée"
     demande.save()
     return redirect("directeur_app:directeur-view")
+
+def list_rapport_depense_view(request):
+    list_rapport_depense = RapportDepense.objects.all().order_by("-date")
+    ctx = {"list_rapport_depense":list_rapport_depense}
+    return render(request, "directeur_templates/rapport_employee.html", ctx)

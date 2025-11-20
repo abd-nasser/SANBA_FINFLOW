@@ -4,10 +4,11 @@
 {% block content %}
 <h2>Fond disponible: {{ fond }}</h2>
 <a href="{% url 'auth_app:register' %}">Ajouter un employée</a>
-
 <a href="{% url 'directeur_app:ajouter-fond' %}">Ajouter des fonds</a>
+<a href="{% url 'directeur_app:rapport-depense-employee' %}">Rapport des dépenses </a>
 
 
+<a href="{% url 'auth_app:logout' %}">Deconnexion</a>
 <div class='list_demande'>
     <hr>
     <hr>

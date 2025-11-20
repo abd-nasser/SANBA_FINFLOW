@@ -30,6 +30,7 @@ def ajouter_fond(request):
             fond.save()
             historique_de_fond = Historique_dajout_fond.objects.create(nom=request.user, montant=fond_aj)
             historique_de_fond.save()
+            print('Fond ajouté avec succès')
             messages.success(request, f"vous venez d'ajouter la somme de {fond_aj} au fond disponible ! Nouveau Capitale est de : {fond.montant}")
             return redirect("directeur_app:directeur-view")
             
@@ -39,7 +40,6 @@ def ajouter_fond(request):
     return render(request, "partials/ajouter_fond.html")
             
         
-            
             
 
 def approuve_demande_view(request, demande_id):
@@ -54,6 +54,7 @@ def refuse_demande_view(request, demande_id):
     demande.status="Refusée"
     demande.save()
     return redirect("directeur_app:directeur-view")
+
 
 def list_rapport_depense_view(request):
     list_rapport_depense = RapportDepense.objects.all().order_by("-date")

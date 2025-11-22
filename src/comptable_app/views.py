@@ -1,6 +1,8 @@
 from django.utils import timezone
+from django.shortcuts import render
+
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import FondDisponibe, Historique_dajout_fond
+from directeur_app.models import FondDisponibe, Historique_dajout_fond
 from secretaire_app.models import DemandeDecaissement
 from employee_app.models import RapportDepense
 from django.contrib import messages
@@ -9,7 +11,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def directeur_view(request):
+def comptable_view(request):
     fond = get_object_or_404(FondDisponibe, id=1)
     list_demande = DemandeDecaissement.objects.all().order_by("-date")
     
@@ -17,7 +19,7 @@ def directeur_view(request):
             "list_demande": list_demande,
             "fond":fond.montant,
            }
-    return render(request, "directeur_templates/directeur.html", ctx)
+    return render(request, "comptable_templates/comptable.html", ctx)
 
 
 
@@ -33,19 +35,19 @@ def ajouter_fond(request):
             historique_de_fond.save()
             print('Fond ajouté avec succès')
             messages.success(request, f"vous venez d'ajouter la somme de {fond_aj} au fond disponible ! Nouveau Capitale est de : {fond.montant}")
-            return redirect("directeur_app:directeur-view")
+            return redirect("comptable_app:comptable-view")
             
         except Exception as e:
             logger.error(f"error{e}")
             
     return render(request, "partials/ajouter_fond.html")
-
             
-def approuve_demande_view(request, demande_id):
+        
+def comptable_approuve_demande_view(request, demande_id):
     demande = get_object_or_404(DemandeDecaissement, id=demande_id)
     
     # MAINTENANT ON PEUT UTILISER request.user.post
-    if request.user.is_superuser or request.user.post and request.user.post.nom == "Directeur":
+    if request.user.post and request.user.post.nom == "Directeur":
         demande.status = 'approuvee_directeur'
         redirect_name = "directeur_app:directeur-view"
     elif request.user.post and request.user.post.nom == "Comptable":
@@ -53,7 +55,7 @@ def approuve_demande_view(request, demande_id):
         redirect_name = "comptable_app:comptable-view"
     else:
         # Si pas de post ou post inconnu
-        return redirect("accueil")
+        return redirect("auth_app:login")
     
     demande.approuve_par = request.user
     demande.date_approbation = timezone.now()
@@ -61,17 +63,17 @@ def approuve_demande_view(request, demande_id):
     
     return redirect(redirect_name)
 
-def refuse_demande_view(request, demande_id):
+def comptable_refuse_demande_view(request, demande_id):
     demande = get_object_or_404(DemandeDecaissement, id=demande_id)
     
     if  request.user.is_superuser or request.user.post and request.user.post.nom == "Directeur":
         demande.status = 'refusee_directeur'
         redirect_name = "directeur_app:directeur-view"
-    elif request.user.post and request.user.post.nom == "Comptable":
+    elif  request.user.is_superuser or request.user.post and request.user.post.nom == "Comptable":
         demande.status = 'refusee_comptable'
         redirect_name = "comptable_app:comptable-view"
     else:
-        return redirect("accueil")
+        return redirect("auth_app:login")
     
     demande.approuve_par = request.user
     demande.date_approbation = timezone.now()

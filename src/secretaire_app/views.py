@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.contrib import messages
 from .forms import DemandeDecaissementForm
 from .models import DemandeDecaissement
@@ -19,8 +20,9 @@ def demande_decaissement_view(request):
         try:
             form = DemandeDecaissementForm(request.POST)
             if form.is_valid():
-                form.save()
+                demande = form.save()
                 return redirect("secretaire_app:secretaire-view")
+                
             
             else:
                 ctx = {"form":form,
@@ -49,7 +51,8 @@ def valider_decaissement_view(request, decaissement_id):
             messages.info(request, "Impossible veillez verifier la somme")
         else:
             fond.montant -= decaissement.montant
-            decaissement.status="Décaissé"
+            decaissement.status="decaisse"
+            decaissement.date_decaissement = timezone.now()
             decaissement.save()
             fond.save()
         

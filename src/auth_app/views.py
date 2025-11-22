@@ -44,6 +44,9 @@ def login_view(request):
             if user.is_superuser or user.post.nom == "Directeur":
                 return redirect("directeur_app:directeur-view")
             
+            elif user.post.nom == "Comptable":
+                return redirect("comptable_app:comptable-view")
+            
             elif user.post.nom == "Secretaire":
                 return redirect("secretaire_app:secretaire-view")
             

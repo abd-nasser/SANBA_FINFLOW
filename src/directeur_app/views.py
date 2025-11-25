@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def directeur_view(request):
     fond = get_object_or_404(FondDisponibe, id=1)
-    list_demande = DemandeDecaissement.objects.all().order_by("-date")
+    list_demande = DemandeDecaissement.objects.all().order_by("-date_demande")
     
     ctx = {
             "list_demande": list_demande,
@@ -38,7 +38,7 @@ def ajouter_fond(request):
         except Exception as e:
             logger.error(f"error{e}")
             
-    return render(request, "partials/ajouter_fond.html")
+    return render(request, "modal/ajouter_fond.html")
 
             
 def approuve_demande_view(request, demande_id):

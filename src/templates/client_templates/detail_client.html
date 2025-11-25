@@ -2,20 +2,17 @@
 
 
 {% block title %}
-    Clients
+    Detail client
 {% endblock title %}
     
 
 {% block content %}
-    
-<a href="{% url 'client_app:ajouter-client' %}">Ajouter un client</a>
-
-    {% for client in clients %}
     <p>{{ client.nom }} {{ client.prenom }}</p>
 
+    {% for chantier in chantiers %}
+    
+    <p>{{ chantier.nom_chantier }}</p>
+
     {% endfor %}
-
-
-</div>
 {% endblock content %}
     

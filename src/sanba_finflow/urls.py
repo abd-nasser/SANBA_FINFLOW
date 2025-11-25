@@ -10,7 +10,8 @@ urlpatterns = [
     path("", include("directeur_app.urls")),
     path("", include("secretaire_app.urls")),
     path("", include("employee_app.urls")),
-    path("", include("comptable_app.urls"))
+    path("", include("comptable_app.urls")),
+    path("", include("client_app.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

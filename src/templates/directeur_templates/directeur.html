@@ -27,6 +27,8 @@
 <a href="{% url 'directeur_app:ajouter-fond' %}">Ajouter des fonds</a>
 <a href="{% url 'directeur_app:rapport-depense-employee' %}">Rapport des dépenses </a>
 
+<a href="{% url 'client_app:liste-client' %}">Liste des clients</a>
+
 
 <a href="{% url 'auth_app:logout' %}">Deconnexion</a>
 <div class='list_demande'>
@@ -42,7 +44,7 @@
     <p>{{ demande.motif }}</p>
     
    
-   {% if demande.status == 'approuvee_directeur' or demande.status == 'approuvee_comptable' %}
+ {% if demande.status == 'approuvee_directeur' or demande.status == 'approuvee_comptable' %}
    <h3 style='color:green;'>{{ demande.status }}</h3>
    {% elif demande.status == 'decaisse' %}
     <h3 style='color:skyblue;'>{{ demande.status }}</h3>
@@ -50,11 +52,12 @@
    {% elif demande.status == 'refusee_directeur' or demande.status == 'refusee_comptable' %}
     <h3 style='color:red;'>{{ demande.status }}</h3>
     {% else %}
-
     <h3 style='color:orange;'>{{ demande.status }}</h3>
-      <a href="{% url 'directeur_app:approuver-demande' demande.id %}" style='color: green;'>Approuver</a>
-         <a href="{% url 'directeur_app:refuser-demande' demande.id %}"style='color: red;'>Refusé</a>
+
+      <a href="{% url 'comptable_app:comptable-approuver-demande' demande.id %}" style='color: green;'>Approuver</a>
+         <a href="{% url 'comptable_app:comptable-refuser-demande' demande.id %}"style='color: red;'>Refusé</a>
    {% endif %}
+    
         
     
     <hr>

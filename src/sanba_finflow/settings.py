@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'django_htmx',
+    'formtools',
+    
     #Tailwind_app
     'tailwind',
     'theme',
@@ -50,7 +54,9 @@ INSTALLED_APPS = [
     'directeur_app',
     'secretaire_app',
     'employee_app',
-    'client_app'
+    'client_app',
+    'chantier_app',
+    'comptable_app',
 ]
 
 MIDDLEWARE = [

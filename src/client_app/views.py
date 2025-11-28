@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin #Sécurité
-from django.views.generic import ListView, CreateView , DetailView
+from django.views.generic import ListView, CreateView , DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.contrib import messages
@@ -8,7 +8,8 @@ from django.contrib import messages
 
 from .models import Chantier
 from .models import Client  # Import the Client model
-from .forms import ClientForm  # Import the ClientForm
+from .forms import ClientForm# Import the ClientForm
+
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -77,41 +78,41 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         
         #Ajoute les chantiers de ce client
-        context["chantier"]=self.object.chantiers.all()
+        context["client_all_chantiers"]=self.object.chantiers.all()
         return context
     
-    
-    
-    
-    
-    
-    
-    
-#FILTRER_CHANTIERS_HTMX-Filtre en temps réel avec htmx
-def filter_chantiers_htmx(request):
-    """Cette vue est appelée par HTMX quand on change un filtre
-        Elle retourne Juste la liste des chantiers filtrés
-    
+
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
+    """Modifier les informations d'un client existant
     """
+    model = Client
+    form_class = ClientForm
+    template_name = "modal/modifier_client.html"
+    success_url = reverse_lazy("client_app:liste-client")
     
-    # 1. Récupère tous les chantiers
-    all_chantiers = Chantier.objects.all()
-    
-    # 2. on regarde les filter dans l'URL
-    #EX: /?status=en_cours&client_id = 5
-    
-    #Filter par status
-    status = request.GET.get('status_chantier') #récupère 'statut du chantier depuis l'URL
-    if status:
-        chantiers = all_chantiers.filter(status_chantier=status) #Filtre les chantiers par leur status
+    def form_valid(self, form):
+        """Méthode appelée quand le formulaire est valide
+        On peut faire des actions supplémentaires ici
+        """
+        #Message de succès
+        messages.success(self.request, f"Client {form.instance.nom} à été modifié avec succès")
         
-    #Filtre par client
-    client_id = request.GET.get("client_id") #récupère 'client_id' depuis l'URL
-    if client_id:
-        chantiers = all_chantiers.filter(client_id=client_id) #Filtre les chantiers par leur clients
+        #Sauvegarde le client et redirige
+        return super().form_valid(form)
     
-    # 3. on retourne JUSTE le html de la liste (pas toute la page)
-    return render(request, 'partials/liste_chantier_partial.html',{
-        "chantiers": chantiers
-    })
+
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
+    """Supprimer un client existant
+    """
+    model = Client
+    template_name = "modal/supprimer_client.html"
+    success_url = reverse_lazy("client_app:liste-client")
     
+    def delete(self, request, *args, **kwargs):
+        """Méthode appelée lors de la suppression
+        On peut faire des actions supplémentaires ici
+        """
+        client = self.get_object()
+        messages.success(self.request, f"Client {client.nom} à été supprimé avec succès")
+        
+        return super().delete(request, *args, **kwargs)

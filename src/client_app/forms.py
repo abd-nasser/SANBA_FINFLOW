@@ -77,5 +77,3 @@ class ClientForm(forms.ModelForm):
             return cleaned_data
                 
                 
-                
-            
